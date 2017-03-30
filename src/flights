@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+
+<?php
+require __DIR__ . '/../vendor/autoload.php';
+
+use Schiphol\Schiphol\SchipholPlanes;
+use Symfony\Component\Console\Application;
+
+$env = new \Dotenv\Dotenv('../');
+$env->load();
+
+$guzzleClient = new GuzzleHttp\Client();
+
+$planes = new SchipholPlanes($guzzleClient, $env);
+
+$flightsCommand = new Schiphol\Commands\SchipholCommand($planes);
+
+$application = new Application('Schiphol Plane Watcher', '1.0.0');
+
+$application->add($flightsCommand);
+
+$application->run();
